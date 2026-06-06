@@ -1,0 +1,282 @@
+/* =========================================
+   VARIABEL WARNA DAN FONT DASAR
+   ========================================= */
+:root {
+    --primary-gold: #D4AF37; /* Emas Lembut */
+    --light-gold: #F3E5AB;
+    --white: #FFFFFF;
+    --dark-text: #333333;
+    --light-gray: #FAFAFA;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth; /* Efek scroll halus saat menu diklik */
+}
+
+body {
+    font-family: 'Montserrat', sans-serif; /* Font untuk teks biasa */
+    background-color: var(--white);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Playfair Display', serif; /* Font elegan untuk judul */
+    font-weight: 400;
+    color: var(--primary-gold);
+}
+
+/* =========================================
+   NAVIGASI (MENU)
+   ========================================= */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--dark-text);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--primary-gold);
+}
+
+/* =========================================
+   STRUKTUR BAGIAN UMUM (SECTION)
+   ========================================= */
+section {
+    padding: 100px 10vw; /* Padding untuk jarak aman di sisi kiri-kanan */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+/* Garis emas kecil di bawah judul section */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: var(--primary-gold);
+    margin: 15px auto 0;
+}
+
+/* =========================================
+   BAGIAN HOME (BERANDA)
+   ========================================= */
+#home {
+    text-align: center;
+    /* 
+       Di bawah ini menggunakan teknik gabungan: overlay putih transparan (85%) + gambar latar belakang.
+       Ganti 'pelukis.jpg' dengan nama file foto sang pelukis Anda.
+       Saat ini saya pasang placeholder gambar pelukis dari Unsplash agar Anda bisa langsung melihat hasilnya.
+    */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
+                     url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1920&q=80');
+    
+    background-size: cover;          /* Memastikan gambar menutup seluruh area home */
+    background-position: center;     /* Memastikan wajah/objek di tengah gambar tetap terlihat */
+    background-attachment: fixed;    /* Membuat efek parallax yang elegan saat di-scroll */
+}
+
+#home h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+#home p {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #555; /* Sedikit lebih gelap agar kontras dengan latar belakang foto */
+    font-weight: 400;
+}
+
+/* =========================================
+   BAGIAN KARYA KAMI & GALERI
+   ========================================= */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.gallery-item {
+    position: relative; /* WAJIB TAMBAHAN: Sebagai patokan posisi teks di dalamnya */
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* KODE BARU: Untuk mengatur posisi judul di pojok kiri bawah gambar */
+.painting-title {
+    position: absolute;
+    bottom: 20px;       /* Jarak dari bawah gambar */
+    left: 20px;         /* Jarak dari kiri gambar */
+    color: #ffffff;     /* Warna teks putih murni */
+    font-size: 20px;    /* Ukuran font judul */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
+    z-index: 10;        /* Memastikan teks berada di lapisan paling atas */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Bayangan hitam halus agar teks terbaca di gambar terang */
+    pointer-events: none; /* Agar teks tidak mengganggu fungsi klik/hover pada gambar */
+}
+
+/* =========================================
+   BAGIAN KONTAK
+   ========================================= */
+.contact-container {
+    display: flex;
+    gap: 50px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.contact-info, .contact-form {
+    flex: 1;
+}
+
+.contact-info h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-gold);
+}
+
+.contact-form button {
+    padding: 15px;
+    background-color: var(--primary-gold);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: #b8962e; /* Warna emas yang sedikit lebih gelap saat dihover */
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+footer {
+    text-align: center;
+    padding: 30px;
+    background-color: var(--dark-text);
+    color: var(--white);
+    font-size: 14px;
+}
+
+footer span {
+    color: var(--primary-gold);
+}
+
+/* =========================================
+   RESPONSIF UNTUK HP (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    nav ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .contact-container {
+        flex-direction: column; /* Mengubah form dan info kontak menjadi atas-bawah */
+    }
+
+    section {
+        padding: 120px 5vw 50px; /* Menyesuaikan padding untuk HP */
+    }
+
+    #home h1 {
+        font-size: 36px;
+    }
+}
