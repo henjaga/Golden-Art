@@ -104,10 +104,7 @@ section {
    ========================================= */
 #home {
     text-align: center;
-    /* 
-       Di bawah ini menggunakan teknik gabungan: overlay putih transparan (85%) + gambar latar belakang.
-       Ganti 'pelukis.jpg' dengan nama file foto sang pelukis Anda.
-       Saat ini saya pasang placeholder gambar pelukis dari Unsplash agar Anda bisa langsung melihat hasilnya.
+    /* Di bawah ini menggunakan teknik gabungan: overlay putih transparan (85%) + gambar latar belakang.
     */
     background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
                      url('img/c675fe97-dcb0-4fd3-b143-21912ea989bb.jpg');
@@ -131,7 +128,7 @@ section {
 }
 
 /* =========================================
-   BAGIAN KARYA KAMI & GALERI
+   BAGIAN KARYA KAMI, GALERI, & DOKUMENTASI
    ========================================= */
 .gallery-grid {
     display: grid;
@@ -140,7 +137,7 @@ section {
 }
 
 .gallery-item {
-    position: relative; /* WAJIB TAMBAHAN: Sebagai patokan posisi teks di dalamnya */
+    position: relative; /* WAJIB: Sebagai patokan posisi teks di dalamnya */
     overflow: hidden;
     border-radius: 4px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -151,7 +148,9 @@ section {
     transform: translateY(-5px);
 }
 
-.gallery-item img {
+/* PEMBARUAN: Ditambahkan 'video' agar ukuran video konsisten dengan gambar */
+.gallery-item img,
+.gallery-item video {
     width: 100%;
     height: 350px;
     object-fit: cover;
@@ -159,31 +158,32 @@ section {
     transition: transform 0.5s ease;
 }
 
-.gallery-item:hover img {
+.gallery-item:hover img,
+.gallery-item:hover video {
     transform: scale(1.05);
 }
 
-/* KODE BARU: Untuk mengatur posisi judul di pojok kiri bawah gambar */
+/* Untuk mengatur posisi judul di pojok kiri bawah gambar/video */
 .painting-title {
     position: absolute;
-    bottom: 20px;       /* Jarak dari bawah gambar */
-    left: 20px;         /* Jarak dari kiri gambar */
+    bottom: 20px;       /* Jarak dari bawah */
+    left: 20px;         /* Jarak dari kiri */
     color: #ffffff;     /* Warna teks putih murni */
     font-size: 20px;    /* Ukuran font judul */
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
     z-index: 10;        /* Memastikan teks berada di lapisan paling atas */
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Bayangan hitam halus agar teks terbaca di gambar terang */
-    pointer-events: none; /* Agar teks tidak mengganggu fungsi klik/hover pada gambar */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Bayangan hitam halus agar teks terbaca jelas */
+    pointer-events: none; /* Agar teks tidak mengganggu fungsi klik/play */
 }
 
-/* KODE BARU: Untuk mengatur gaya teks nama pelukis */
+/* Untuk mengatur gaya teks nama pelukis / keterangan tambahan */
 .artist-name {
     display: block;
     font-size: 14px;      /* Ukuran huruf lebih kecil dari judul */
     font-weight: 300;     /* Ketebalan huruf tipis/ringan */
-    margin-top: 4px;      /* Jarak antara judul dan nama pelukis */
+    margin-top: 4px;      /* Jarak antara judul dan nama */
     color: var(--light-gold); /* Warna emas terang agar kontras dan elegan */
 }
 
@@ -243,7 +243,7 @@ section {
 }
 
 .contact-form button:hover {
-    background-color: #b8962e; /* Warna emas yang sedikit lebih gelap saat dihover */
+    background-color: #b8962e; 
 }
 
 /* =========================================
@@ -278,11 +278,11 @@ footer span {
     }
 
     .contact-container {
-        flex-direction: column; /* Mengubah form dan info kontak menjadi atas-bawah */
+        flex-direction: column; 
     }
 
     section {
-        padding: 120px 5vw 50px; /* Menyesuaikan padding untuk HP */
+        padding: 120px 5vw 50px; 
     }
 
     #home h1 {
