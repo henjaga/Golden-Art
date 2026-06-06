@@ -110,7 +110,7 @@ section {
        Saat ini saya pasang placeholder gambar pelukis dari Unsplash agar Anda bisa langsung melihat hasilnya.
     */
     background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
-                     url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1920&q=80');
+                     url('img/c675fe97-dcb0-4fd3-b143-21912ea989bb.jpg');
     
     background-size: cover;          /* Memastikan gambar menutup seluruh area home */
     background-position: center;     /* Memastikan wajah/objek di tengah gambar tetap terlihat */
