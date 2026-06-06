@@ -178,6 +178,15 @@ section {
     pointer-events: none; /* Agar teks tidak mengganggu fungsi klik/hover pada gambar */
 }
 
+/* KODE BARU: Untuk mengatur gaya teks nama pelukis */
+.artist-name {
+    display: block;
+    font-size: 14px;      /* Ukuran huruf lebih kecil dari judul */
+    font-weight: 300;     /* Ketebalan huruf tipis/ringan */
+    margin-top: 4px;      /* Jarak antara judul dan nama pelukis */
+    color: var(--light-gold); /* Warna emas terang agar kontras dan elegan */
+}
+
 /* =========================================
    BAGIAN KONTAK
    ========================================= */
