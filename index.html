@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+    
+    <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -32,7 +34,6 @@
     <section id="karya">
         <h2 class="section-title">Karya Kami</h2>
         <div class="gallery-grid">
-            
             <div class="gallery-item">
                 <img src="img/IMG_20250401_135610.jpg" alt="Lukisan 1">
                 <div class="painting-title">Portrait Sketch</div> 
@@ -55,7 +56,9 @@
         <div class="gallery-grid">
             
             <div class="gallery-item">
-                <img src="img/Galeri/Cupid.jpg" alt="Proses Melukis 1">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Cupid.jpg" alt="Cupid">
+                </div>
                 <div class="painting-title">
                     Cupid
                     <span class="artist-name">Golden Lee</span>
@@ -64,7 +67,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Rumahku.jpg" alt="Pameran 1">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Rumahku.jpg" alt="Rumahku">
+                </div>
                 <div class="painting-title">
                     Rumahku
                     <span class="artist-name">Golden Lee</span>
@@ -73,7 +78,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Amati.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Amati.jpg" alt="Amati">
+                </div>
                 <div class="painting-title">
                     Amati
                     <span class="artist-name">Golden Lee</span>
@@ -82,7 +89,9 @@
             </div>
             
             <div class="gallery-item">
-                <img src="img/Galeri/ai pagong.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/ai pagong.jpg" alt="Ai Pagong">
+                </div>
                 <div class="painting-title">
                     Ai Pagong
                     <span class="artist-name">Keong Art, Melin</span>
@@ -91,7 +100,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Aku.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Aku.jpg" alt="Aku">
+                </div>
                 <div class="painting-title">
                     Aku
                     <span class="artist-name">Egi</span>
@@ -100,7 +111,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Genggam Sebuah Pot.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Genggam Sebuah Pot.jpg" alt="Genggam Sebuah Pot">
+                </div>
                 <div class="painting-title">
                     Genggam Sebuah Pot
                     <span class="artist-name">Diasly.F</span>
@@ -109,7 +122,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Mata Rafflesia.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Mata Rafflesia.jpg" alt="Mata Rafflesia">
+                </div>
                 <div class="painting-title">
                     Mata Rafflesia
                     <span class="artist-name">Stanley</span>
@@ -118,7 +133,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Nenek, Ibu dari Ibuku.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Nenek, Ibu dari Ibuku.jpg" alt="Nenek, Ibu dari Ibuku">
+                </div>
                 <div class="painting-title">
                     Nenek, Ibu dari Ibuku
                     <span class="artist-name">Peek-A-Boo</span>
@@ -127,7 +144,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Sisa sisa ledakan.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Sisa sisa ledakan.jpg" alt="Sisa Sisa Ledakan">
+                </div>
                 <div class="painting-title">
                     Sisa Sisa Ledakan
                     <span class="artist-name">Rea</span>
@@ -136,7 +155,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/strowberry moon.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/strowberry moon.jpg" alt="Strowberry Moon">
+                </div>
                 <div class="painting-title">
                     Strowberry Moon
                     <span class="artist-name">Keong Art, Cerlang</span>
@@ -145,7 +166,9 @@
             </div>
 
             <div class="gallery-item">
-                <img src="img/Galeri/Tangga Kesadaran.jpg" alt="Studio Golden Lee">
+                <div class="gallery-img-wrapper">
+                    <img src="img/Galeri/Tangga Kesadaran.jpg" alt="Tangga Kesadaran">
+                </div>
                 <div class="painting-title">
                     Tangga Kesadaran
                     <span class="artist-name">Ar.ZENZ</span>
@@ -159,79 +182,26 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <div class="modal-body">
-                
                 <div class="modal-left">
                     <img id="modalImage" src="" alt="Lukisan Detail">
                 </div>
-                
                 <div class="modal-right">
                     <h2 id="modalTitle">Judul Lukisan</h2>
                     <h4 id="modalArtist">Nama Seniman</h4>
-                    
                     <div class="modal-desc-box">
                         <p id="modalDesc">Deskripsi lukisan akan muncul di sini.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <script>
-    // Fungsi untuk membuka modal dan mengisi data
-    function openModal(imgSrc, title, artist, desc) {
-        const modalImg = document.getElementById("modalImage");
-        
-        // Mencegah tampilan ikon broken image
-        modalImg.style.visibility = "hidden"; 
-        modalImg.src = imgSrc;
-        
-        // Memunculkan gambar dengan mulus setelah selesai di-load
-        modalImg.onload = function() {
-            modalImg.style.visibility = "visible";
-        };
-
-        document.getElementById("modalTitle").innerText = title;
-        document.getElementById("modalArtist").innerText = artist;
-        document.getElementById("modalDesc").innerText = desc;
-        
-        document.getElementById("paintingModal").style.display = "flex";
-        
-        // MENGUNCI SCROLL BACKGROUND (Bug Fix)
-        document.body.classList.add("modal-open");
-    }
-
-    // Fungsi untuk menutup modal
-    function closeModal() {
-        document.getElementById("paintingModal").style.display = "none";
-        // MEMBUKA KEMBALI SCROLL BACKGROUND
-        document.body.classList.remove("modal-open");
-    }
-
-    // Menutup modal jika layar hitam (background) di klik
-    window.onclick = function(event) {
-        var modal = document.getElementById("paintingModal");
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-
-    // UX Tambahan: Menutup modal dengan tombol ESC pada keyboard
-    document.addEventListener('keydown', function(event) {
-        if (event.key === "Escape") {
-            closeModal();
-        }
-    });
-    </script>
-
     <section id="dokumentasi">
         <h2 class="section-title">Dokumentasi Kegiatan</h2>
         <div class="gallery-grid">
-            
             <div class="gallery-item">
-                <img src="img/Dokumentasi/Foto/IMG_20250225_125503.jpg" alt="Proses Pembuatan Lukisan">
+                <img src="img/Dokumentasi/Foto/IMG_20250225_125503.jpg" alt="Pameran Lukisan">
                 <div class="painting-title">
-                    
                     <span class="artist-name">Pameran Lukisan</span>
                 </div>
             </div>
@@ -242,19 +212,16 @@
                     Browser Anda tidak mendukung pemutar video.
                 </video>
                 <div class="painting-title">
-                    
                     <span class="artist-name">Proses Sketsa Lukisan Last supper</span>
                 </div>
             </div>
 
             <div class="gallery-item">
-                <img src="img/Dokumentasi/Foto/IMG_20250215_184232.jpg" alt="Suasana Pameran Seni">
+                <img src="img/Dokumentasi/Foto/IMG_20250215_184232.jpg" alt="Melukis Bersama">
                 <div class="painting-title">
-                    
                     <span class="artist-name">Melukis Bersama</span>
                 </div>
             </div>
-
         </div>
     </section>
 
