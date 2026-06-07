@@ -1,5 +1,5 @@
-// Fungsi untuk membuka modal dan mengisi data secara dinamis
-function openModal(imgSrc, title, artist, desc) {
+// Fungsi untuk membuka modal dan mengisi data secara dinamis (Revisi Parameter Lengkap)
+function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     const modalImg = document.getElementById("modalImage");
     
     // Mencegah kilatan ikon broken image saat gambar memuat
@@ -11,9 +11,27 @@ function openModal(imgSrc, title, artist, desc) {
         modalImg.style.visibility = "visible";
     };
 
+    // Mengisi data teks utama
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalArtist").innerText = artist;
+    document.getElementById("modalSize").innerText = size;
+    document.getElementById("modalPaint").innerText = paint;
+    document.getElementById("modalYear").innerText = year;
     document.getElementById("modalDesc").innerText = desc;
+    
+    // Mengatur tautan dan teks Instagram secara dinamis
+    const instaLink = document.getElementById("modalInstagram");
+    const instaHandle = document.getElementById("modalIgHandle");
+    
+    if (instagram && instagram !== '#') {
+        // Membersihkan karakter '@' jika tidak sengaja terinput ganda di parameter
+        const cleanHandle = instagram.replace('@', '');
+        instaLink.href = `https://instagram.com/${cleanHandle}`;
+        instaHandle.innerText = `@${cleanHandle}`;
+        instaLink.style.display = "inline-flex";
+    } else {
+        instaLink.style.display = "none"; // Sembunyikan jika tidak ada data IG
+    }
     
     document.getElementById("paintingModal").style.display = "flex";
     
@@ -79,3 +97,70 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const galleryContainer = document.getElementById("galleryContainer");
+
+    // Pastikan kode fetch ini hanya berjalan jika galleryContainer ditemukan di halaman
+    if (galleryContainer) {
+        fetch("galeri.json")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    // Membuat elemen gallery item
+                    const galleryItem = document.createElement("div");
+                    galleryItem.classList.add("gallery-item");
+
+                    // Menyusun template HTML untuk setiap item galeri
+                    galleryItem.innerHTML = `
+                        <div class="gallery-img-wrapper">
+                            <img src="${item.imgSrc}" alt="${item.title}">
+                        </div>
+                        <div class="painting-title">
+                            ${item.title}
+                            <span class="artist-name">${item.artist}</span>
+                        </div>
+                        <button class="btn-detail">Lihat Detail</button>
+                    `;
+
+                    // Menambahkan event listener klik untuk tombol detail (agar parameternya aman dari bug tanda kutip)
+                    const btnDetail = galleryItem.querySelector(".btn-detail");
+                    btnDetail.addEventListener("click", () => {
+                        openModal(
+                            item.imgSrc,
+                            item.title,
+                            item.artist,
+                            item.size,
+                            item.paintType,
+                            item.year,
+                            item.instagram,
+                            item.description
+                        );
+                    });
+
+                    // Memasukkan ke dalam grid container utama
+                    galleryContainer.appendChild(galleryItem);
+                });
+
+                // Setelah data selesai di-render, panggil ulang logika Tap Mobile jika diperlukan
+                initMobileTap(); 
+            })
+            .catch(error => console.error("Gagal memuat database galeri:", error));
+    }
+});
+
+// Bungkus logika sentuhan HP lama Anda ke dalam fungsi agar bisa dijalankan setelah fetch selesai
+function initMobileTap() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+            if (window.innerWidth <= 768) {
+                if (event.target.classList.contains('btn-detail')) return;
+                galleryItems.forEach(otherItem => {
+                    if (otherItem !== item) otherItem.classList.remove('active');
+                });
+                this.classList.toggle('active');
+            }
+        });
+    });
+}
