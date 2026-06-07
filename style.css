@@ -1,3 +1,13 @@
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px; /* Mencegah judul tertutup header fixed */
+}
+
+/* Class untuk mengunci scroll saat modal terbuka */
+body.modal-open {
+    overflow: hidden;
+}
+
 /* =========================================
    VARIABEL WARNA DAN FONT DASAR
    ========================================= */
@@ -455,16 +465,36 @@ footer span {
     line-height: 1.8;
 }
 
-/* Responsif untuk Layar HP */
+/* Penyesuaian UX untuk Layar Sentuh (HP) */
 @media (max-width: 768px) {
-    .modal-body {
-        flex-direction: column;
-        padding: 40px 20px 30px;
-        max-height: 85vh;
-        overflow-y: auto;
+    /* Membuat tombol lihat detail langsung terlihat di HP agar user tidak bingung */
+    .btn-detail {
+        opacity: 0.9;
+        padding: 8px 16px;
+        font-size: 13px;
+        bottom: 10px;
+        top: auto;
+        transform: translate(-50%, 0);
     }
     
-    .modal-right {
-        margin-top: 10px;
+    .gallery-item::before {
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+        opacity: 1; /* Latar gelap tipis di bawah selalu muncul untuk kontras teks */
+    }
+}
+
+/* Memastikan efek hover HANYA berjalan di perangkat dengan Mouse (Laptop/PC) */
+@media (hover: hover) {
+    .btn-detail {
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+    }
+    .gallery-item:hover .btn-detail {
+        opacity: 1;
+    }
+    .gallery-item:hover::before {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.5);
     }
 }

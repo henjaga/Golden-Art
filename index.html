@@ -178,28 +178,50 @@
     </div>
 
     <script>
-        // Fungsi untuk membuka modal dan mengisi data
-        function openModal(imgSrc, title, artist, desc) {
-            document.getElementById("modalImage").src = imgSrc;
-            document.getElementById("modalTitle").innerText = title;
-            document.getElementById("modalArtist").innerText = artist;
-            document.getElementById("modalDesc").innerText = desc;
-            
-            document.getElementById("paintingModal").style.display = "flex";
-        }
+    // Fungsi untuk membuka modal dan mengisi data
+    function openModal(imgSrc, title, artist, desc) {
+        const modalImg = document.getElementById("modalImage");
+        
+        // Mencegah tampilan ikon broken image
+        modalImg.style.visibility = "hidden"; 
+        modalImg.src = imgSrc;
+        
+        // Memunculkan gambar dengan mulus setelah selesai di-load
+        modalImg.onload = function() {
+            modalImg.style.visibility = "visible";
+        };
 
-        // Fungsi untuk menutup modal
-        function closeModal() {
-            document.getElementById("paintingModal").style.display = "none";
-        }
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalArtist").innerText = artist;
+        document.getElementById("modalDesc").innerText = desc;
+        
+        document.getElementById("paintingModal").style.display = "flex";
+        
+        // MENGUNCI SCROLL BACKGROUND (Bug Fix)
+        document.body.classList.add("modal-open");
+    }
 
-        // Menutup modal jika layar hitam (background) di klik
-        window.onclick = function(event) {
-            var modal = document.getElementById("paintingModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+    // Fungsi untuk menutup modal
+    function closeModal() {
+        document.getElementById("paintingModal").style.display = "none";
+        // MEMBUKA KEMBALI SCROLL BACKGROUND
+        document.body.classList.remove("modal-open");
+    }
+
+    // Menutup modal jika layar hitam (background) di klik
+    window.onclick = function(event) {
+        var modal = document.getElementById("paintingModal");
+        if (event.target == modal) {
+            closeModal();
         }
+    }
+
+    // UX Tambahan: Menutup modal dengan tombol ESC pada keyboard
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    });
     </script>
 
     <section id="dokumentasi">
