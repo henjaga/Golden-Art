@@ -42,3 +42,40 @@ document.addEventListener('keydown', function(event) {
         closeModal();
     }
 });
+
+// =======================================================
+// LOGIKA TAP MOBILE (Memunculkan tombol detail saat di-tap)
+// =======================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+            // Hanya berjalan di layar HP/Mobile
+            if (window.innerWidth <= 768) {
+                
+                // Jika user menekan tombol detail, biarkan fungsi modal berjalan
+                if (event.target.classList.contains('btn-detail')) {
+                    return;
+                }
+                
+                // Tutup/sembunyikan tombol dari gambar lain yang sedang aktif
+                galleryItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+
+                // Toggle (buka/tutup) tombol pada gambar yang ditekan
+                this.classList.toggle('active');
+            }
+        });
+    });
+
+    // UX Tambahan: Sembunyikan tombol kembali jika user mengetuk di luar area gambar
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.gallery-item') && window.innerWidth <= 768) {
+            galleryItems.forEach(item => item.classList.remove('active'));
+        }
+    });
+});

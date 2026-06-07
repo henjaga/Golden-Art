@@ -483,13 +483,21 @@ footer span {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        opacity: 1; /* Langsung tampilkan di HP karena tidak ada fitur 'hover' mouse */
+        opacity: 0; /* DIUBAH: Sembunyikan dulu di HP (dari 1 menjadi 0) */
+        pointer-events: none; /* DIUBAH: Mengunci klik saat tombol masih gaib */
         width: auto;
         margin: 0;
         padding: 10px 18px;
         font-size: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         z-index: 15;
+        transition: opacity 0.3s ease; /* TAMBAHAN: Efek transisi halus saat muncul */
+    }
+
+    /* KUNCI UTAMA HP: Munculkan tombol hanya saat item galeri di-tap (mendapat class .active) */
+    .gallery-item.active .btn-detail {
+        opacity: 1;
+        pointer-events: auto; /* Aktifkan fungsi klik tombol */
     }
 
     /* =========================================
