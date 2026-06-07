@@ -289,3 +289,182 @@ footer span {
         font-size: 36px;
     }
 }
+
+/* =========================================
+   TOMBOL DETAIL (MUNCUL SAAT DI-HOVER)
+   ========================================= */
+.gallery-item::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Efek gelap saat dihover */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
+}
+
+.btn-detail {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 24px;
+    background-color: var(--primary-gold);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s;
+    z-index: 15;
+}
+
+.gallery-item:hover .btn-detail {
+    opacity: 1;
+}
+
+.btn-detail:hover {
+    background-color: #b8962e;
+}
+
+/* =========================================
+   DESAIN MODAL POPUP (Revisi)
+   ========================================= */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); 
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: var(--white);
+    width: 100%;
+    max-width: 900px;
+    /* Menghilangkan garis hitam dan membuat sudut lebih membulat (rounded) */
+    border: none; 
+    border-radius: 16px; 
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #333;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--primary-gold);
+}
+
+.modal-body {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+}
+
+/* Bagian Kiri: Lukisan */
+.modal-left {
+    flex: 1;
+    /* Menghilangkan garis hitam dan menambah sudut membulat */
+    border: none; 
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+    padding: 10px; /* Memberi sedikit ruang bernapas di sekitar lukisan */
+}
+
+.modal-left img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 8px; /* Mengikuti gaya rounded */
+}
+
+/* Bagian Kanan: Teks & Kotak Deskripsi */
+.modal-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left; /* Memastikan semua perataan ke kiri */
+}
+
+.modal-right h2 {
+    font-family: 'Playfair Display', serif;
+    color: #000;
+    font-size: 32px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.modal-right h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: var(--primary-gold); /* Menggunakan warna emas agar lebih elegan */
+    font-size: 16px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+/* Kotak Deskripsi Bawah */
+.modal-desc-box {
+    /* Menghilangkan garis dan padding berlebih agar teks sejajar dengan judul */
+    border: none; 
+    padding: 0; 
+    flex-grow: 1; 
+    display: flex;
+    align-items: flex-start; /* Memaksa teks mulai dari atas */
+    justify-content: flex-start; /* Memaksa teks mulai dari kiri */
+    text-align: left; /* Perataan rata kiri */
+}
+
+.modal-desc-box p {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.8;
+}
+
+/* Responsif untuk Layar HP */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+        padding: 40px 20px 30px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    .modal-right {
+        margin-top: 10px;
+    }
+}
