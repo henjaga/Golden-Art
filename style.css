@@ -345,17 +345,28 @@ footer span {
 .close-btn {
     position: absolute;
     top: 15px;
-    right: 25px;
-    color: #333;
-    font-size: 32px;
+    right: 15px; /* Posisikan lebih ke sudut */
+    color: #333333;
+    font-size: 24px; 
     font-weight: bold;
     cursor: pointer;
-    z-index: 10;
-    transition: color 0.3s ease;
+    z-index: 50; /* Pastikan berada di atas scrollbar */
+    
+    /* Tambahan agar tidak tumpang tindih */
+    background-color: var(--white); 
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Membuat bentuk lingkaran */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Bayangan tipis agar elegan */
+    transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-    color: var(--primary-gold);
+    color: var(--white);
+    background-color: var(--primary-gold);
 }
 
 .modal-body {
@@ -389,10 +400,11 @@ footer span {
     justify-content: flex-start;
     text-align: left;
     
-    /* --- TAMBAHAN FITUR SCROLL DESKTOP --- */
-    max-height: 450px; /* Menyesuaikan dengan max-height gambar agar sejajar */
-    overflow-y: auto; /* Memunculkan scroll otomatis jika teks melebihi batas */
-    padding-right: 15px; /* Memberi ruang agar teks tidak menabrak scrollbar */
+    /* Pengaturan Scroll */
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 20px; /* Memberi jarak antara teks dan scrollbar */
+    padding-top: 10px; /* Mendorong konten sedikit menjauh dari tombol X di atas */
 }
 
 /* Custom Scrollbar untuk Modal Right */
