@@ -353,20 +353,20 @@ footer span {
     z-index: 50; /* Pastikan berada di atas scrollbar */
     
     /* Tambahan agar tidak tumpang tindih */
-    background-color: var(--white); 
+    /*background-color: var(--white); 
     width: 40px;
     height: 40px;
     border-radius: 50%; /* Membuat bentuk lingkaran */
-    display: flex;
+    /*display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Bayangan tipis agar elegan */
-    transition: all 0.3s ease;
+    /*transition: all 0.3s ease;*/
 }
 
 .close-btn:hover {
-    color: var(--white);
-    background-color: var(--primary-gold);
+    color: var(--primary-gold);
+    /*background-color: var(--primary-gold);*/
 }
 
 .modal-body {
