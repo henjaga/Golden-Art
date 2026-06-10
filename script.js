@@ -39,9 +39,9 @@ function closeModal() {
     document.body.classList.remove("modal-open");
 }
 
+// Menutup modal secara global (Klik luar area atau tekan ESC)
 window.onclick = function(event) {
-    var modal = document.getElementById("paintingModal");
-    if (event.target == modal) {
+    if (event.target === document.getElementById("paintingModal")) {
         closeModal();
     }
 }
@@ -54,21 +54,21 @@ document.addEventListener('keydown', function(event) {
 
 
 // =======================================================
-// LOGIKA AMBIL DATA DARI DATABASE JSON (FETCH MULTIPLE)
+// RENDER ASINKRONUS DATABASE JSON (OPTIMAL PERFORMANCE)
 // =======================================================
 document.addEventListener("DOMContentLoaded", () => {
     const galleryContainer = document.getElementById("galleryContainer");
     const karyaContainer = document.getElementById("karyaContainer");
     const dokumentasiContainer = document.getElementById("dokumentasiContainer");
 
-    // Array penampung semua request fetch data
     const fetchPromises = [];
 
-    // 1. MEMUAT DATA: KARYA KAMI
+    // 1. MEMUAT DATA: KARYA KAMI (Menggunakan Fragment)
     if (karyaContainer) {
         const fetchKarya = fetch("karya.json")
             .then(response => response.json())
             .then(data => {
+                const fragment = document.createDocumentFragment();
                 data.forEach(item => {
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
@@ -78,20 +78,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <div class="painting-title">${item.title}</div>
                     `;
-                    karyaContainer.appendChild(galleryItem);
+                    fragment.appendChild(galleryItem);
                 });
+                karyaContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchKarya);
     }
 
-    // 2. MEMUAT DATA: GALERI UTAMA
+    // 2. MEMUAT DATA: GALERI UTAMA (Menggunakan Fragment & Penyimpanan Data Object)
     if (galleryContainer) {
         const fetchGallery = fetch("galeri.json")
             .then(response => response.json())
             .then(data => {
+                const fragment = document.createDocumentFragment();
                 data.forEach(item => {
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
+                    
+                    // Simpan data mentah ke dalam dataset elemen agar mudah ditarik saat di-klik
+                    galleryItem.dataset.paintingInfo = JSON.stringify(item);
+
                     galleryItem.innerHTML = `
                         <div class="gallery-img-wrapper">
                             <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
@@ -102,31 +108,23 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <button class="btn-detail">Lihat Detail</button>
                     `;
-
-                    const btnDetail = galleryItem.querySelector(".btn-detail");
-                    btnDetail.addEventListener("click", () => {
-                        openModal(
-                            item.imgSrc, item.title, item.artist, item.size, 
-                            item.paintType, item.year, item.instagram, item.description
-                        );
-                    });
-
-                    galleryContainer.appendChild(galleryItem);
+                    fragment.appendChild(galleryItem);
                 });
+                galleryContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchGallery);
     }
 
-    // 3. MEMUAT DATA: DOKUMENTASI KEGIATAN (FOTO & VIDEO)
+    // 3. MEMUAT DATA: DOKUMENTASI KEGIATAN
     if (dokumentasiContainer) {
         const fetchDokumentasi = fetch("dokumentasi.json")
             .then(response => response.json())
             .then(data => {
+                const fragment = document.createDocumentFragment();
                 data.forEach(item => {
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
 
-                    // Memisahkan render HTML berdasarkan tipe data (video / image)
                     if (item.type === "video") {
                         galleryItem.innerHTML = `
                             <div class="gallery-img-wrapper">
@@ -149,45 +147,57 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         `;
                     }
-                    dokumentasiContainer.appendChild(galleryItem);
+                    fragment.appendChild(galleryItem);
                 });
+                dokumentasiContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchDokumentasi);
     }
 
-    // PASTIKAN SEMUA DATA SELESAI DI-RENDER SEBELUM MENGAKTIFKAN LOGIKA HP
+    // AKTIFKAN EVENT DELEGATION SETELAH SEMUA ELEMENT BERHASIL DI-RENDER
     Promise.all(fetchPromises)
         .then(() => {
-            initMobileTap();
+            initGalleryInteractions();
         })
-        .catch(error => console.error("Gagal memuat database JSON:", error));
+        .catch(error => console.error("Gagal memuat sistem database:", error));
 });
 
 
 // =======================================================
-// LOGIKA TAP MOBILE (Aktif setelah render JSON selesai)
+// MANAGEMENT EVENT INTERAKSI (EVENT DELEGATION METHOD)
 // =======================================================
-function initMobileTap() {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    galleryItems.forEach(item => {
-        item.addEventListener('click', function(event) {
-            if (window.innerWidth <= 768) {
-                if (event.target.classList.contains('btn-detail')) return;
-                
-                galleryItems.forEach(otherItem => {
-                    if (otherItem !== item) otherItem.classList.remove('active');
-                });
-                
-                this.classList.toggle('active');
-            }
-        });
+function initGalleryInteractions() {
+    const galleryContainer = document.getElementById("galleryContainer");
+    if (!galleryContainer) return;
+
+    galleryContainer.addEventListener("click", function(event) {
+        const item = event.target.closest(".gallery-item");
+        if (!item) return;
+
+        // Ambil kembali data object murni yang kita simpan di dataset tadi
+        const data = JSON.parse(item.dataset.paintingInfo);
+
+        // Kasus 1: Jika yang diklik adalah tombol "Lihat Detail"
+        if (event.target.classList.contains("btn-detail")) {
+            openModal(data.imgSrc, data.title, data.artist, data.size, data.paintType, data.year, data.instagram, data.description);
+            return;
+        }
+
+        // Kasus 2: Logika sentuhan layar HP (Mobile Tap Toggle)
+        if (window.innerWidth <= 768) {
+            const allItems = galleryContainer.querySelectorAll(".gallery-item");
+            allItems.forEach(otherItem => {
+                if (otherItem !== item) otherItem.classList.remove("active");
+            });
+            item.classList.toggle("active");
+        }
     });
 
-    // Sembunyikan kembali efek hover jika user mengetuk di luar area kartu
+    // Menutup tombol melayang jika mengetuk area kosong di luar gambar pada HP
     document.addEventListener('click', function(event) {
-        if (!event.target.closest('.gallery-item') && window.innerWidth <= 768) {
-            galleryItems.forEach(item => item.classList.remove('active'));
+        if (!event.target.closest('#galleryContainer') && window.innerWidth <= 768) {
+            const allItems = galleryContainer.querySelectorAll(".gallery-item");
+            allItems.forEach(item => item.classList.remove('active'));
         }
     });
 }
