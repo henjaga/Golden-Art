@@ -1,17 +1,16 @@
-// Fungsi untuk membuka modal dan mengisi data secara dinamis (Revisi Parameter Lengkap)
+// =======================================================
+// INTERAKSI UTAMA MODAL DETAIL LUKISAN
+// =======================================================
 function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     const modalImg = document.getElementById("modalImage");
     
-    // Mencegah kilatan ikon broken image saat gambar memuat
     modalImg.style.visibility = "hidden"; 
     modalImg.src = imgSrc;
     
-    // Memunculkan gambar dengan transisi halus setelah selesai di-load
     modalImg.onload = function() {
         modalImg.style.visibility = "visible";
     };
 
-    // Mengisi data teks utama
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalArtist").innerText = artist;
     document.getElementById("modalSize").innerText = size;
@@ -19,34 +18,27 @@ function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     document.getElementById("modalYear").innerText = year;
     document.getElementById("modalDesc").innerText = desc;
     
-    // Mengatur tautan dan teks Instagram secara dinamis
     const instaLink = document.getElementById("modalInstagram");
     const instaHandle = document.getElementById("modalIgHandle");
     
     if (instagram && instagram !== '#') {
-        // Membersihkan karakter '@' jika tidak sengaja terinput ganda di parameter
         const cleanHandle = instagram.replace('@', '');
         instaLink.href = `https://instagram.com/${cleanHandle}`;
         instaHandle.innerText = `@${cleanHandle}`;
         instaLink.style.display = "inline-flex";
     } else {
-        instaLink.style.display = "none"; // Sembunyikan jika tidak ada data IG
+        instaLink.style.display = "none";
     }
     
     document.getElementById("paintingModal").style.display = "flex";
-    
-    // MENGUNCI SCROLL BACKGROUND UTAMA (UX Fix)
     document.body.classList.add("modal-open");
 }
 
-// Fungsi untuk menutup modal
 function closeModal() {
     document.getElementById("paintingModal").style.display = "none";
-    // MEMBUKA KEMBALI SCROLL BACKGROUND UTAMA
     document.body.classList.remove("modal-open");
 }
 
-// Menutup modal jika area background hitam di luar panel klik
 window.onclick = function(event) {
     var modal = document.getElementById("paintingModal");
     if (event.target == modal) {
@@ -54,67 +46,55 @@ window.onclick = function(event) {
     }
 }
 
-// UX Tambahan: Menutup modal dengan tombol ESC pada keyboard
 document.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
         closeModal();
     }
 });
 
+
 // =======================================================
-// LOGIKA TAP MOBILE (Memunculkan tombol detail saat di-tap)
+// LOGIKA AMBIL DATA DARI DATABASE JSON (FETCH MULTIPLE)
 // =======================================================
-document.addEventListener("DOMContentLoaded", () => {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-
-    galleryItems.forEach(item => {
-        item.addEventListener('click', function(event) {
-            // Hanya berjalan di layar HP/Mobile
-            if (window.innerWidth <= 768) {
-                
-                // Jika user menekan tombol detail, biarkan fungsi modal berjalan
-                if (event.target.classList.contains('btn-detail')) {
-                    return;
-                }
-                
-                // Tutup/sembunyikan tombol dari gambar lain yang sedang aktif
-                galleryItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-
-                // Toggle (buka/tutup) tombol pada gambar yang ditekan
-                this.classList.toggle('active');
-            }
-        });
-    });
-
-    // UX Tambahan: Sembunyikan tombol kembali jika user mengetuk di luar area gambar
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.gallery-item') && window.innerWidth <= 768) {
-            galleryItems.forEach(item => item.classList.remove('active'));
-        }
-    });
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const galleryContainer = document.getElementById("galleryContainer");
+    const karyaContainer = document.getElementById("karyaContainer");
+    const dokumentasiContainer = document.getElementById("dokumentasiContainer");
 
-    // Pastikan kode fetch ini hanya berjalan jika galleryContainer ditemukan di halaman
-    if (galleryContainer) {
-        fetch("galeri.json")
+    // Array penampung semua request fetch data
+    const fetchPromises = [];
+
+    // 1. MEMUAT DATA: KARYA KAMI
+    if (karyaContainer) {
+        const fetchKarya = fetch("karya.json")
             .then(response => response.json())
             .then(data => {
                 data.forEach(item => {
-                    // Membuat elemen gallery item
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
-
-                    // Menyusun template HTML untuk setiap item galeri
                     galleryItem.innerHTML = `
                         <div class="gallery-img-wrapper">
-                            <img src="${item.imgSrc}" alt="${item.title}">
+                            <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
+                        </div>
+                        <div class="painting-title">${item.title}</div>
+                    `;
+                    karyaContainer.appendChild(galleryItem);
+                });
+            });
+        fetchPromises.push(fetchKarya);
+    }
+
+    // 2. MEMUAT DATA: GALERI UTAMA
+    if (galleryContainer) {
+        const fetchGallery = fetch("galeri.json")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    const galleryItem = document.createElement("div");
+                    galleryItem.classList.add("gallery-item");
+                    galleryItem.innerHTML = `
+                        <div class="gallery-img-wrapper">
+                            <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
                         </div>
                         <div class="painting-title">
                             ${item.title}
@@ -123,44 +103,91 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button class="btn-detail">Lihat Detail</button>
                     `;
 
-                    // Menambahkan event listener klik untuk tombol detail (agar parameternya aman dari bug tanda kutip)
                     const btnDetail = galleryItem.querySelector(".btn-detail");
                     btnDetail.addEventListener("click", () => {
                         openModal(
-                            item.imgSrc,
-                            item.title,
-                            item.artist,
-                            item.size,
-                            item.paintType,
-                            item.year,
-                            item.instagram,
-                            item.description
+                            item.imgSrc, item.title, item.artist, item.size, 
+                            item.paintType, item.year, item.instagram, item.description
                         );
                     });
 
-                    // Memasukkan ke dalam grid container utama
                     galleryContainer.appendChild(galleryItem);
                 });
-
-                // Setelah data selesai di-render, panggil ulang logika Tap Mobile jika diperlukan
-                initMobileTap(); 
-            })
-            .catch(error => console.error("Gagal memuat database galeri:", error));
+            });
+        fetchPromises.push(fetchGallery);
     }
+
+    // 3. MEMUAT DATA: DOKUMENTASI KEGIATAN (FOTO & VIDEO)
+    if (dokumentasiContainer) {
+        const fetchDokumentasi = fetch("dokumentasi.json")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    const galleryItem = document.createElement("div");
+                    galleryItem.classList.add("gallery-item");
+
+                    // Memisahkan render HTML berdasarkan tipe data (video / image)
+                    if (item.type === "video") {
+                        galleryItem.innerHTML = `
+                            <div class="gallery-img-wrapper">
+                                <video controls preload="none" poster="${item.poster}">
+                                    <source src="${item.src}" type="video/webm">
+                                    Browser Anda tidak mendukung pemutar video.
+                                </video>
+                            </div>
+                            <div class="painting-title">
+                                <span class="artist-name">${item.title}</span>
+                            </div>
+                        `;
+                    } else {
+                        galleryItem.innerHTML = `
+                            <div class="gallery-img-wrapper">
+                                <img src="${item.src}" alt="${item.title}" loading="lazy">
+                            </div>
+                            <div class="painting-title">
+                                <span class="artist-name">${item.title}</span>
+                            </div>
+                        `;
+                    }
+                    dokumentasiContainer.appendChild(galleryItem);
+                });
+            });
+        fetchPromises.push(fetchDokumentasi);
+    }
+
+    // PASTIKAN SEMUA DATA SELESAI DI-RENDER SEBELUM MENGAKTIFKAN LOGIKA HP
+    Promise.all(fetchPromises)
+        .then(() => {
+            initMobileTap();
+        })
+        .catch(error => console.error("Gagal memuat database JSON:", error));
 });
 
-// Bungkus logika sentuhan HP lama Anda ke dalam fungsi agar bisa dijalankan setelah fetch selesai
+
+// =======================================================
+// LOGIKA TAP MOBILE (Aktif setelah render JSON selesai)
+// =======================================================
 function initMobileTap() {
     const galleryItems = document.querySelectorAll('.gallery-item');
+    
     galleryItems.forEach(item => {
         item.addEventListener('click', function(event) {
             if (window.innerWidth <= 768) {
                 if (event.target.classList.contains('btn-detail')) return;
+                
                 galleryItems.forEach(otherItem => {
                     if (otherItem !== item) otherItem.classList.remove('active');
                 });
+                
                 this.classList.toggle('active');
             }
         });
+    });
+
+    // Sembunyikan kembali efek hover jika user mengetuk di luar area kartu
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.gallery-item') && window.innerWidth <= 768) {
+            galleryItems.forEach(item => item.classList.remove('active'));
+        }
     });
 }

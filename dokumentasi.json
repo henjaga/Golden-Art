@@ -1,0 +1,18 @@
+[
+  {
+    "type": "image",
+    "title": "Pameran Lukisan",
+    "src": "img/Dokumentasi/Foto/IMG_20250225_125503.webp"
+  },
+  {
+    "type": "video",
+    "title": "Proses Sketsa Lukisan Last supper",
+    "src": "img/Dokumentasi/Video/0607.webm",
+    "poster": "img/Dokumentasi/Foto/VID_20250125_032030 - frame at 0m2s.webp"
+  },
+  {
+    "type": "image",
+    "title": "Melukis Bersama",
+    "src": "img/Dokumentasi/Foto/IMG_20250215_184232.webp"
+  }
+]

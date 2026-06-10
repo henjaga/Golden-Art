@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Golden Lee - Galeri Digital</title>
+    <title>Golden Lee - Galeri Digital</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -33,33 +33,12 @@
 
     <section id="karya">
         <h2 class="section-title">Karya Kami</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <img src="img/Karya Kami/Portrait Sketch.webp" alt="Lukisan 1">
-                </div>
-                <div class="painting-title">Portrait Sketch</div> 
-            </div>
-
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <img src="img/Karya Kami/Portrait Painting.webp" alt="Lukisan 2">
-                </div>
-                <div class="painting-title">Portrait Painting</div> 
-            </div>
-            
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <img src="img/Karya Kami/Custom Painting.webp" alt="Lukisan 3">
-                </div>
-                <div class="painting-title">Custom Painting</div> 
-            </div>
-        </div>
+        <div class="gallery-grid" id="karyaContainer"></div>
     </section>
 
     <section id="galeri">
-    <h2 class="section-title">Galeri</h2>
-    <div class="gallery-grid" id="galleryContainer"></div>
+        <h2 class="section-title">Galeri</h2>
+        <div class="gallery-grid" id="galleryContainer"></div>
     </section>
 
     <div id="paintingModal" class="modal">
@@ -94,37 +73,7 @@
 
     <section id="dokumentasi">
         <h2 class="section-title">Dokumentasi Kegiatan</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <img src="img/Dokumentasi/Foto/IMG_20250225_125503.webp" alt="Pameran Lukisan">
-                </div>
-                <div class="painting-title">
-                    <span class="artist-name">Pameran Lukisan</span>
-                </div>
-            </div>
-
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <video controls poster="img/Dokumentasi/Foto/VID_20250125_032030 - frame at 0m2s.webp">
-                        <source src="img/Dokumentasi/Video/0607.webm" type="video/webm">
-                        Browser Anda tidak mendukung pemutar video.
-                    </video>
-                </div>
-                <div class="painting-title">
-                    <span class="artist-name">Proses Sketsa Lukisan Last supper</span>
-                </div>
-            </div>
-
-            <div class="gallery-item">
-                <div class="gallery-img-wrapper">
-                    <img src="img/Dokumentasi/Foto/IMG_20250215_184232.webp" alt="Melukis Bersama">
-                </div>
-                <div class="painting-title">
-                    <span class="artist-name">Melukis Bersama</span>
-                </div>
-            </div>
-        </div>
+        <div class="gallery-grid" id="dokumentasiContainer"></div>
     </section>
 
     <section id="kontak">
