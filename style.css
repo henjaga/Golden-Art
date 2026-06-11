@@ -625,3 +625,153 @@ footer span {
 .ig-icon {
     font-size: 16px;
 }
+
+/* Tambahkan kode ini di bagian paling bawah file style.css Anda */
+
+/* =========================================
+   DESAIN MODAL ORDER & CAROUSEL (BARU)
+   ========================================= */
+.order-modal-content {
+    max-width: 600px;
+    width: 90%;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.order-modal-body {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+}
+
+/* Container Slider Utama */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: var(--light-gray);
+}
+
+.carousel-slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide-img {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Tombol Panah Navigasi Kiri & Kanan */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.75);
+    color: var(--dark-text);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.3s, scale 0.2s;
+    z-index: 10;
+}
+
+.carousel-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    scale: 1.05;
+}
+
+.prev-arrow { left: 15px; }
+.next-arrow { right: 15px; }
+
+/* Dots Indicator */
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.dot.active {
+    background-color: var(--white);
+    transform: scale(1.2);
+}
+
+/* Info Box */
+.order-info-box h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    color: var(--dark-text);
+}
+
+.order-info-box p {
+    font-size: 14px;
+    color: #555555;
+    line-height: 1.6;
+}
+
+/* Tombol WhatsApp CTA */
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #25D366;
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+}
+
+.wa-icon {
+    font-size: 18px;
+}
+
+/* Responsivitas Layar Seluler */
+@media (max-width: 768px) {
+    .carousel-container {
+        height: 240px;
+    }
+    .order-info-box h2 {
+        font-size: 22px;
+    }
+    .order-modal-body {
+        padding: 20px;
+    }
+}

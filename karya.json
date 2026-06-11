@@ -1,14 +1,32 @@
 [
   {
     "title": "Portrait Sketch",
-    "imgSrc": "img/Karya Kami/Portrait Sketch.webp"
+    "imgSrc": "img/Karya Kami/Portrait Sketch/Portrait Sketch.webp",
+    "description": "Jasa pembuatan sketsa wajah hitam putih manual menggunakan media pensil berkualitas tinggi di atas kertas khusus art paper. Sangat cocok sebagai hadiah eksklusif ulang tahun, wisuda, atau anniversary.",
+    "images": [
+      "img/Karya Kami/Portrait Sketch/Portrait Sketch.webp",
+      "img/Karya Kami/Portrait Sketch/Portrait Sketch2.webp",
+      "img/Karya Kami/Portrait Sketch/Portrait Sketch3.webp"
+    ]
   },
   {
     "title": "Portrait Painting",
-    "imgSrc": "img/Karya Kami/Portrait Painting.webp"
+    "imgSrc": "img/Karya Kami/Portrait Painting/Portrait Painting.webp",
+    "description": "Layanan lukis wajah berwarna (full color) dengan detail ekspresi yang tinggi menggunakan media cat minyak atau akrilik di atas kanvas premium. Menghadirkan kesan mewah dan abadi untuk ruangan Anda.",
+    "images": [
+      "img/Karya Kami/Portrait Painting/Portrait Painting.webp",
+      "img/Karya Kami/Portrait Painting/Portrait Painting2.webp",
+      "img/Karya Kami/Portrait Painting/Portrait Painting3.webp"
+    ]
   },
   {
     "title": "Custom Painting",
-    "imgSrc": "img/Karya Kami/Custom Painting.webp"
+    "imgSrc": "img/Karya Kami/Custom Painting/Custom Painting.webp",
+    "description": "Wujudkan imajinasi Anda dalam bentuk seni visual. Kami menerima pesanan lukisan custom bertema pemandangan, abstrak, replika maestro, hingga dekorasi dinding interior sesuai preferensi konsep Anda.",
+    "images": [
+      "img/Karya Kami/Custom Painting/Custom Painting.webp",
+      "img/Karya Kami/Custom Painting/Custom Painting2.webp",
+      "img/Karya Kami/Custom Painting/Custom Painting_3.webp"
+    ]
   }
 ]

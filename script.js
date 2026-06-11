@@ -1,15 +1,11 @@
 // =======================================================
-// INTERAKSI UTAMA MODAL DETAIL LUKISAN
+// MANAGEMENT MODAL DETAIL GALERI UTAMA
 // =======================================================
 function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     const modalImg = document.getElementById("modalImage");
-    
     modalImg.style.visibility = "hidden"; 
     modalImg.src = imgSrc;
-    
-    modalImg.onload = function() {
-        modalImg.style.visibility = "visible";
-    };
+    modalImg.onload = function() { modalImg.style.visibility = "visible"; };
 
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalArtist").innerText = artist;
@@ -29,7 +25,6 @@ function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     } else {
         instaLink.style.display = "none";
     }
-    
     document.getElementById("paintingModal").style.display = "flex";
     document.body.classList.add("modal-open");
 }
@@ -39,22 +34,97 @@ function closeModal() {
     document.body.classList.remove("modal-open");
 }
 
-// Menutup modal secara global (Klik luar area atau tekan ESC)
-window.onclick = function(event) {
-    if (event.target === document.getElementById("paintingModal")) {
-        closeModal();
+
+// =======================================================
+// MANAGEMENT MODAL POPUP ORDER & LOGIKA SLIDER CAROUSEL
+// =======================================================
+let currentSlideIndex = 0;
+let totalSlides = 0;
+
+function openOrderModal(data) {
+    document.getElementById("orderTitle").innerText = data.title;
+    document.getElementById("orderDesc").innerText = data.description || "Hubungi kami langsung untuk detail pengerjaan layanan ini.";
+
+    const slidesContainer = document.getElementById("carouselSlides");
+    const dotsContainer = document.getElementById("carouselDots");
+    
+    slidesContainer.innerHTML = "";
+    dotsContainer.innerHTML = "";
+
+    // Fallback jika array penampung foto kosong, gunakan asset utama minimal 3 loop
+    const images = data.images && data.images.length >= 3 ? data.images : [data.imgSrc, data.imgSrc, data.imgSrc];
+    totalSlides = images.length;
+    currentSlideIndex = 0;
+
+    images.forEach((src, idx) => {
+        // Render Gambar Slide
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = `${data.title} Sample ${idx + 1}`;
+        img.classList.add("carousel-slide-img");
+        slidesContainer.appendChild(img);
+
+        // Render Indikator Titik (Dots)
+        const dot = document.createElement("div");
+        dot.classList.add("dot");
+        if (idx === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => goToSlide(idx));
+        dotsContainer.appendChild(dot);
+    });
+
+    updateCarouselView();
+    document.getElementById("orderModal").style.display = "flex";
+    document.body.classList.add("modal-open");
+}
+
+function closeOrderModal() {
+    document.getElementById("orderModal").style.display = "none";
+    document.body.classList.remove("modal-open");
+}
+
+function goToSlide(index) {
+    currentSlideIndex = index;
+    updateCarouselView();
+}
+
+function nextSlide() {
+    currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+    updateCarouselView();
+}
+
+function prevSlide() {
+    currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+    updateCarouselView();
+}
+
+function updateCarouselView() {
+    const slidesContainer = document.getElementById("carouselSlides");
+    if(slidesContainer) {
+        slidesContainer.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
     }
+    const dots = document.querySelectorAll("#carouselDots .dot");
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === currentSlideIndex);
+    });
+}
+
+
+// Global Window Close Listeners (Klik Luar & ESC)
+window.onclick = function(event) {
+    if (event.target === document.getElementById("paintingModal")) closeModal();
+    if (event.target === document.getElementById("orderModal")) closeOrderModal();
 }
 
 document.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
         closeModal();
+        closeOrderModal();
     }
 });
 
 
 // =======================================================
-// RENDER ASINKRONUS DATABASE JSON (OPTIMAL PERFORMANCE)
+// PROSES RENDER ASINKRONUS DATA JSON
 // =======================================================
 document.addEventListener("DOMContentLoaded", () => {
     const galleryContainer = document.getElementById("galleryContainer");
@@ -63,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fetchPromises = [];
 
-    // 1. MEMUAT DATA: KARYA KAMI (Menggunakan Fragment)
+    // 1. MEMUAT DATA: KARYA KAMI (Ditambahkan Tombol Order Sekarang)
     if (karyaContainer) {
         const fetchKarya = fetch("karya.json")
             .then(response => response.json())
@@ -72,11 +142,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.forEach(item => {
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
+                    galleryItem.dataset.orderInfo = JSON.stringify(item);
+
                     galleryItem.innerHTML = `
                         <div class="gallery-img-wrapper">
                             <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
                         </div>
                         <div class="painting-title">${item.title}</div>
+                        <button class="btn-detail btn-order">Order Sekarang</button>
                     `;
                     fragment.appendChild(galleryItem);
                 });
@@ -85,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPromises.push(fetchKarya);
     }
 
-    // 2. MEMUAT DATA: GALERI UTAMA (Menggunakan Fragment & Penyimpanan Data Object)
+    // 2. MEMUAT DATA: GALERI UTAMA
     if (galleryContainer) {
         const fetchGallery = fetch("galeri.json")
             .then(response => response.json())
@@ -94,8 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.forEach(item => {
                     const galleryItem = document.createElement("div");
                     galleryItem.classList.add("gallery-item");
-                    
-                    // Simpan data mentah ke dalam dataset elemen agar mudah ditarik saat di-klik
                     galleryItem.dataset.paintingInfo = JSON.stringify(item);
 
                     galleryItem.innerHTML = `
@@ -130,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="gallery-img-wrapper">
                                 <video controls preload="none" poster="${item.poster}">
                                     <source src="${item.src}" type="video/webm">
-                                    Browser Anda tidak mendukung pemutar video.
                                 </video>
                             </div>
                             <div class="painting-title">
@@ -154,50 +224,64 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPromises.push(fetchDokumentasi);
     }
 
-    // AKTIFKAN EVENT DELEGATION SETELAH SEMUA ELEMENT BERHASIL DI-RENDER
+    // EVENT INTERACTION INITIALIZATION AFTER ALL FETCH DONE
     Promise.all(fetchPromises)
         .then(() => {
             initGalleryInteractions();
+            
+            // Pasang event listener statis untuk kontrol Carousel
+            document.getElementById("nextArrow").addEventListener("click", nextSlide);
+            document.getElementById("prevArrow").addEventListener("click", prevSlide);
+            document.getElementById("closeOrderBtn").addEventListener("click", closeOrderModal);
         })
-        .catch(error => console.error("Gagal memuat sistem database:", error));
+        .catch(error => console.error("Sistem gagal memuat repositori JSON:", error));
 });
 
 
 // =======================================================
-// MANAGEMENT EVENT INTERAKSI (EVENT DELEGATION METHOD)
+// MANAGEMENT DELEGASI EVENT KLIK KARTU (OPTIMAL)
 // =======================================================
 function initGalleryInteractions() {
+    // A. Interaksi Section Galeri Utama
     const galleryContainer = document.getElementById("galleryContainer");
-    if (!galleryContainer) return;
+    if (galleryContainer) {
+        galleryContainer.addEventListener("click", function(event) {
+            const item = event.target.closest(".gallery-item");
+            if (!item) return;
 
-    galleryContainer.addEventListener("click", function(event) {
-        const item = event.target.closest(".gallery-item");
-        if (!item) return;
+            const data = JSON.parse(item.dataset.paintingInfo);
+            if (event.target.classList.contains("btn-detail")) {
+                openModal(data.imgSrc, data.title, data.artist, data.size, data.paintType, data.year, data.instagram, data.description);
+                return;
+            }
+            handleMobileTap(item, galleryContainer);
+        });
+    }
 
-        // Ambil kembali data object murni yang kita simpan di dataset tadi
-        const data = JSON.parse(item.dataset.paintingInfo);
+    // B. Interaksi Section Karya Kami (Fitur Baru)
+    const karyaContainer = document.getElementById("karyaContainer");
+    if (karyaContainer) {
+        karyaContainer.addEventListener("click", function(event) {
+            const item = event.target.closest(".gallery-item");
+            if (!item) return;
 
-        // Kasus 1: Jika yang diklik adalah tombol "Lihat Detail"
-        if (event.target.classList.contains("btn-detail")) {
-            openModal(data.imgSrc, data.title, data.artist, data.size, data.paintType, data.year, data.instagram, data.description);
-            return;
-        }
+            const data = JSON.parse(item.dataset.orderInfo);
+            if (event.target.classList.contains("btn-order")) {
+                openOrderModal(data);
+                return;
+            }
+            handleMobileTap(item, karyaContainer);
+        });
+    }
+}
 
-        // Kasus 2: Logika sentuhan layar HP (Mobile Tap Toggle)
-        if (window.innerWidth <= 768) {
-            const allItems = galleryContainer.querySelectorAll(".gallery-item");
-            allItems.forEach(otherItem => {
-                if (otherItem !== item) otherItem.classList.remove("active");
-            });
-            item.classList.toggle("active");
-        }
-    });
-
-    // Menutup tombol melayang jika mengetuk area kosong di luar gambar pada HP
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('#galleryContainer') && window.innerWidth <= 768) {
-            const allItems = galleryContainer.querySelectorAll(".gallery-item");
-            allItems.forEach(item => item.classList.remove('active'));
-        }
-    });
+// Pembantu toggle efek hover kartu pada perangkat sentuh mobile
+function handleMobileTap(item, container) {
+    if (window.innerWidth <= 768) {
+        const allItems = container.querySelectorAll(".gallery-item");
+        allItems.forEach(otherItem => {
+            if (otherItem !== item) otherItem.classList.remove("active");
+        });
+        item.classList.toggle("active");
+    }
 }
