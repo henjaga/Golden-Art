@@ -310,7 +310,7 @@ footer span {
 }
 
 /* =========================================
-   DESAIN MODAL POPUP (DESKTOP)
+   DESAIN MODAL POPUP GLOBAL
    ========================================= */
 .modal {
     display: none; 
@@ -342,17 +342,16 @@ footer span {
     to { opacity: 1; transform: scale(1); }
 }
 
+/* FIX BUG: Memisahkan Tombol Close dari Scrollbar */
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px; 
+    top: 15px;
+    right: 15px; 
     color: #333333;
     font-size: 22px; 
     font-weight: bold;
     cursor: pointer;
-    z-index: 100; /* Berada di lapisan paling atas melampaui scrollbar teks */
-    
-    /* Perbaikan Desain Sesuai Sketsa: Tombol Melayang (Floating Circle) */
+    z-index: 100; 
     background-color: var(--white); 
     width: 40px;
     height: 40px;
@@ -370,10 +369,13 @@ footer span {
     transform: scale(1.05);
 }
 
+/* =========================================
+   MODAL 1: GALERI
+   ========================================= */
 .modal-body {
     display: flex;
     gap: 40px;
-    padding: 40px;
+    padding: 30px; /* Padding dikurangi sedikit agar area scrollbar aman */
 }
 
 .modal-left {
@@ -401,14 +403,14 @@ footer span {
     justify-content: flex-start;
     text-align: left;
     
-    /* Pengaturan Scroll */
+    /* Pengaturan Scroll yang Aman dari Tabrakan */
     max-height: 450px;
     overflow-y: auto;
-    padding-right: 20px; /* Memberi jarak antara teks dan scrollbar */
-    padding-top: 10px; /* Mendorong konten sedikit menjauh dari tombol X di atas */
+    padding-right: 15px; 
+    padding-top: 10px; 
 }
 
-/* Custom Scrollbar untuk Modal Right */
+/* Custom Scrollbar */
 .modal-right::-webkit-scrollbar {
     width: 5px;
 }
@@ -427,7 +429,6 @@ footer span {
     background: #b8962e; 
 }
 
-/* Penerapan Jarak Sesuai Prinsip Desain Baik */
 .modal-right h2 {
     font-family: 'Playfair Display', serif;
     color: #111111;
@@ -446,20 +447,186 @@ footer span {
     margin-bottom: 20px;
 }
 
+.modal-meta {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #444444;
+}
+
+.meta-specs {
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+.meta-year {
+    font-size: 13px;
+    color: #888888;
+    margin-top: 2px;
+}
+
 .modal-desc-box {
     border-top: 1px solid #eeeeee;
     padding-top: 18px;
+    margin-bottom: 20px;
 }
 
 .modal-desc-box p {
     font-size: 14px;
     color: #555555;
     line-height: 1.7;
-    text-align: justify; /* Tambahan baris ini agar rata kanan-kiri */
+    text-align: justify; 
+}
+
+.modal-social {
+    margin-top: auto; 
+    padding-top: 15px;
+    border-top: 1px dashed #eeeeee;
+}
+
+.modal-social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-gold);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.modal-social a:hover {
+    color: var(--dark-text);
 }
 
 /* =========================================
-   RESPONSIF UNTUK HP (MOBILE REVISI)
+   MODAL 2: ORDER & CAROUSEL
+   ========================================= */
+.order-modal-content {
+    max-width: 600px;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.order-modal-body {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: var(--light-gray);
+}
+
+.carousel-slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide-img {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.75);
+    color: var(--dark-text);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background-color 0.3s, scale 0.2s;
+    z-index: 10;
+}
+
+.carousel-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    scale: 1.05;
+}
+
+.prev-arrow { left: 15px; }
+.next-arrow { right: 15px; }
+
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.dot.active {
+    background-color: var(--white);
+    transform: scale(1.2);
+}
+
+.order-info-box h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    color: var(--dark-text);
+}
+
+.order-info-box p {
+    font-size: 14px;
+    color: #555555;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #25D366;
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   MEDIA QUERY GABUNGAN (RESPONSIF MOBILE)
    ========================================= */
 @media (max-width: 768px) {
     header {
@@ -491,56 +658,49 @@ footer span {
     }
 
     .gallery-img-wrapper {
-        height: 280px; /* Tinggi seragam untuk semua gambar di HP */
+        height: 280px; 
     }
 
-    /* Membuat filter gelap tetap muncul di HP agar teks putih di atasnya terbaca */
     .gallery-img-wrapper::before {
         opacity: 0.45; 
     }
 
-    /* Kunci Utama: Tetap gunakan Absolute di sudut gambar tanpa kotak bawah */
     .painting-title {
         position: absolute; 
         bottom: 15px;
         left: 15px;
-        color: #ffffff; /* Teks kembali menjadi putih */
+        color: #ffffff; 
         text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
-        font-size: 16px; /* Perkecil sedikit agar pas di layar HP */
+        font-size: 16px; 
         padding: 0;
         z-index: 10;
     }
 
     .artist-name {
-        color: var(--light-gold); /* Nama seniman menggunakan warna emas muda */
+        color: var(--light-gold); 
     }
 
-    /* Tombol Detail dipindah ke tengah gambar agar tidak membuat kotak tambahan di bawah */
     .btn-detail {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        opacity: 0; /* DIUBAH: Sembunyikan dulu di HP (dari 1 menjadi 0) */
-        pointer-events: none; /* DIUBAH: Mengunci klik saat tombol masih gaib */
+        opacity: 0; 
+        pointer-events: none; 
         width: auto;
         margin: 0;
         padding: 10px 18px;
         font-size: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         z-index: 15;
-        transition: opacity 0.3s ease; /* TAMBAHAN: Efek transisi halus saat muncul */
+        transition: opacity 0.3s ease; 
     }
 
-    /* KUNCI UTAMA HP: Munculkan tombol hanya saat item galeri di-tap (mendapat class .active) */
     .gallery-item.active .btn-detail {
         opacity: 1;
-        pointer-events: auto; /* Aktifkan fungsi klik tombol */
+        pointer-events: auto; 
     }
 
-    /* =========================================
-       MEMPERBAIKI MODAL POP-UP DI HP
-       ========================================= */
     .modal {
         align-items: flex-start; 
         overflow-y: auto; 
@@ -573,204 +733,15 @@ footer span {
     .modal-right h4 {
         margin-bottom: 15px;
     }
-}
 
-/* =========================================
-   TAMBAHAN STYLE METADATA MODAL
-   ========================================= */
-.modal-meta {
-    margin-bottom: 15px;
-    font-size: 14px;
-    color: #444444;
-}
-
-.meta-specs {
-    font-weight: 500;
-    color: var(--dark-text);
-}
-
-.meta-year {
-    font-size: 13px;
-    color: #888888;
-    margin-top: 2px;
-}
-
-.modal-desc-box {
-    border-top: 1px solid #eeeeee;
-    padding-top: 15px;
-    margin-bottom: 20px;
-}
-
-.modal-social {
-    margin-top: auto; /* Mendorong tombol IG ke bagian paling bawah panel kanan */
-    padding-top: 15px;
-    border-top: 1px dashed #eeeeee;
-}
-
-.modal-social a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--primary-gold);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.modal-social a:hover {
-    color: var(--dark-text);
-}
-
-.ig-icon {
-    font-size: 16px;
-}
-
-/* Tambahkan kode ini di bagian paling bawah file style.css Anda */
-
-/* =========================================
-   DESAIN MODAL ORDER & CAROUSEL (BARU)
-   ========================================= */
-.order-modal-content {
-    max-width: 600px;
-    width: 90%;
-    padding: 0;
-    overflow: hidden;
-    border-radius: 12px;
-}
-
-.order-modal-body {
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-    gap: 20px;
-}
-
-/* Container Slider Utama */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 340px;
-    overflow: hidden;
-    border-radius: 8px;
-    background-color: var(--light-gray);
-}
-
-.carousel-slides {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.carousel-slide-img {
-    min-width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Tombol Panah Navigasi Kiri & Kanan */
-.carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.75);
-    color: var(--dark-text);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: background-color 0.3s, scale 0.2s;
-    z-index: 10;
-}
-
-.carousel-arrow:hover {
-    background-color: rgba(255, 255, 255, 0.95);
-    scale: 1.05;
-}
-
-.prev-arrow { left: 15px; }
-.next-arrow { right: 15px; }
-
-/* Dots Indicator */
-.carousel-dots {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.dot.active {
-    background-color: var(--white);
-    transform: scale(1.2);
-}
-
-/* Info Box */
-.order-info-box h2 {
-    font-size: 26px;
-    margin-bottom: 8px;
-    color: var(--dark-text);
-}
-
-.order-info-box p {
-    font-size: 14px;
-    color: #555555;
-    line-height: 1.6;
-}
-
-/* Tombol WhatsApp CTA */
-.btn-whatsapp {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: #25D366;
-    color: var(--white);
-    text-decoration: none;
-    padding: 14px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 15px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.btn-whatsapp:hover {
-    background-color: #128C7E;
-    transform: translateY(-2px);
-}
-
-.wa-icon {
-    font-size: 18px;
-}
-
-/* Responsivitas Layar Seluler */
-@media (max-width: 768px) {
     .carousel-container {
         height: 240px;
     }
+
     .order-info-box h2 {
         font-size: 22px;
     }
+
     .order-modal-body {
         padding: 20px;
     }

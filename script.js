@@ -34,7 +34,6 @@ function closeModal() {
     document.body.classList.remove("modal-open");
 }
 
-
 // =======================================================
 // MANAGEMENT MODAL POPUP ORDER & LOGIKA SLIDER CAROUSEL
 // =======================================================
@@ -51,20 +50,17 @@ function openOrderModal(data) {
     slidesContainer.innerHTML = "";
     dotsContainer.innerHTML = "";
 
-    // Fallback jika array penampung foto kosong, gunakan asset utama minimal 3 loop
-    const images = data.images && data.images.length >= 3 ? data.images : [data.imgSrc, data.imgSrc, data.imgSrc];
+    const images = data.images && data.images.length > 0 ? data.images : [data.imgSrc];
     totalSlides = images.length;
     currentSlideIndex = 0;
 
     images.forEach((src, idx) => {
-        // Render Gambar Slide
         const img = document.createElement("img");
         img.src = src;
         img.alt = `${data.title} Sample ${idx + 1}`;
         img.classList.add("carousel-slide-img");
         slidesContainer.appendChild(img);
 
-        // Render Indikator Titik (Dots)
         const dot = document.createElement("div");
         dot.classList.add("dot");
         if (idx === 0) dot.classList.add("active");
@@ -108,12 +104,13 @@ function updateCarouselView() {
     });
 }
 
-
-// Global Window Close Listeners (Klik Luar & ESC)
-window.onclick = function(event) {
+// =======================================================
+// GLOBAL EVENT LISTENERS (Menutup Modal)
+// =======================================================
+window.addEventListener('click', function(event) {
     if (event.target === document.getElementById("paintingModal")) closeModal();
     if (event.target === document.getElementById("orderModal")) closeOrderModal();
-}
+});
 
 document.addEventListener('keydown', function(event) {
     if (event.key === "Escape") {
@@ -122,9 +119,16 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+// Tutup melalui tombol 'X'
+document.getElementById("closeGalleryBtn")?.addEventListener("click", closeModal);
+document.getElementById("closeOrderBtn")?.addEventListener("click", closeOrderModal);
+
+// Kontrol Carousel
+document.getElementById("nextArrow")?.addEventListener("click", nextSlide);
+document.getElementById("prevArrow")?.addEventListener("click", prevSlide);
 
 // =======================================================
-// PROSES RENDER ASINKRONUS DATA JSON
+// PROSES RENDER ASINKRONUS DATA JSON (Promise.allSettled)
 // =======================================================
 document.addEventListener("DOMContentLoaded", () => {
     const galleryContainer = document.getElementById("galleryContainer");
@@ -133,43 +137,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fetchPromises = [];
 
-    // 1. MEMUAT DATA: KARYA KAMI (Ditambahkan Tombol Order Sekarang)
+    // 1. KARYA KAMI
     if (karyaContainer) {
         const fetchKarya = fetch("karya.json")
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 const fragment = document.createDocumentFragment();
                 data.forEach(item => {
-                    const galleryItem = document.createElement("div");
-                    galleryItem.classList.add("gallery-item");
-                    galleryItem.dataset.orderInfo = JSON.stringify(item);
-
-                    galleryItem.innerHTML = `
+                    const el = document.createElement("div");
+                    el.classList.add("gallery-item");
+                    el.dataset.orderInfo = JSON.stringify(item);
+                    el.innerHTML = `
                         <div class="gallery-img-wrapper">
                             <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
                         </div>
                         <div class="painting-title">${item.title}</div>
                         <button class="btn-detail btn-order">Order Sekarang</button>
                     `;
-                    fragment.appendChild(galleryItem);
+                    fragment.appendChild(el);
                 });
                 karyaContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchKarya);
     }
 
-    // 2. MEMUAT DATA: GALERI UTAMA
+    // 2. GALERI UTAMA
     if (galleryContainer) {
         const fetchGallery = fetch("galeri.json")
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 const fragment = document.createDocumentFragment();
                 data.forEach(item => {
-                    const galleryItem = document.createElement("div");
-                    galleryItem.classList.add("gallery-item");
-                    galleryItem.dataset.paintingInfo = JSON.stringify(item);
-
-                    galleryItem.innerHTML = `
+                    const el = document.createElement("div");
+                    el.classList.add("gallery-item");
+                    el.dataset.paintingInfo = JSON.stringify(item);
+                    el.innerHTML = `
                         <div class="gallery-img-wrapper">
                             <img src="${item.imgSrc}" alt="${item.title}" loading="lazy">
                         </div>
@@ -179,78 +181,64 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <button class="btn-detail">Lihat Detail</button>
                     `;
-                    fragment.appendChild(galleryItem);
+                    fragment.appendChild(el);
                 });
                 galleryContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchGallery);
     }
 
-    // 3. MEMUAT DATA: DOKUMENTASI KEGIATAN
+    // 3. DOKUMENTASI KEGIATAN
     if (dokumentasiContainer) {
         const fetchDokumentasi = fetch("dokumentasi.json")
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
                 const fragment = document.createDocumentFragment();
                 data.forEach(item => {
-                    const galleryItem = document.createElement("div");
-                    galleryItem.classList.add("gallery-item");
-
+                    const el = document.createElement("div");
+                    el.classList.add("gallery-item");
                     if (item.type === "video") {
-                        galleryItem.innerHTML = `
+                        el.innerHTML = `
                             <div class="gallery-img-wrapper">
                                 <video controls preload="none" poster="${item.poster}">
                                     <source src="${item.src}" type="video/webm">
                                 </video>
                             </div>
-                            <div class="painting-title">
-                                <span class="artist-name">${item.title}</span>
-                            </div>
+                            <div class="painting-title"><span class="artist-name">${item.title}</span></div>
                         `;
                     } else {
-                        galleryItem.innerHTML = `
+                        el.innerHTML = `
                             <div class="gallery-img-wrapper">
                                 <img src="${item.src}" alt="${item.title}" loading="lazy">
                             </div>
-                            <div class="painting-title">
-                                <span class="artist-name">${item.title}</span>
-                            </div>
+                            <div class="painting-title"><span class="artist-name">${item.title}</span></div>
                         `;
                     }
-                    fragment.appendChild(galleryItem);
+                    fragment.appendChild(el);
                 });
                 dokumentasiContainer.appendChild(fragment);
             });
         fetchPromises.push(fetchDokumentasi);
     }
 
-    // EVENT INTERACTION INITIALIZATION AFTER ALL FETCH DONE
-    Promise.all(fetchPromises)
-        .then(() => {
-            initGalleryInteractions();
-            
-            // Pasang event listener statis untuk kontrol Carousel
-            document.getElementById("nextArrow").addEventListener("click", nextSlide);
-            document.getElementById("prevArrow").addEventListener("click", prevSlide);
-            document.getElementById("closeOrderBtn").addEventListener("click", closeOrderModal);
-        })
-        .catch(error => console.error("Sistem gagal memuat repositori JSON:", error));
+    // Gunakan allSettled agar jika satu JSON gagal, yang lain tetap jalan
+    Promise.allSettled(fetchPromises).then(() => {
+        initGalleryInteractions();
+    });
 });
 
-
 // =======================================================
-// MANAGEMENT DELEGASI EVENT KLIK KARTU (OPTIMAL)
+// MANAGEMENT DELEGASI EVENT KLIK KARTU
 // =======================================================
 function initGalleryInteractions() {
-    // A. Interaksi Section Galeri Utama
     const galleryContainer = document.getElementById("galleryContainer");
     if (galleryContainer) {
         galleryContainer.addEventListener("click", function(event) {
             const item = event.target.closest(".gallery-item");
             if (!item) return;
 
-            const data = JSON.parse(item.dataset.paintingInfo);
             if (event.target.classList.contains("btn-detail")) {
+                const data = JSON.parse(item.dataset.paintingInfo);
                 openModal(data.imgSrc, data.title, data.artist, data.size, data.paintType, data.year, data.instagram, data.description);
                 return;
             }
@@ -258,15 +246,14 @@ function initGalleryInteractions() {
         });
     }
 
-    // B. Interaksi Section Karya Kami (Fitur Baru)
     const karyaContainer = document.getElementById("karyaContainer");
     if (karyaContainer) {
         karyaContainer.addEventListener("click", function(event) {
             const item = event.target.closest(".gallery-item");
             if (!item) return;
 
-            const data = JSON.parse(item.dataset.orderInfo);
             if (event.target.classList.contains("btn-order")) {
+                const data = JSON.parse(item.dataset.orderInfo);
                 openOrderModal(data);
                 return;
             }
@@ -275,7 +262,6 @@ function initGalleryInteractions() {
     }
 }
 
-// Pembantu toggle efek hover kartu pada perangkat sentuh mobile
 function handleMobileTap(item, container) {
     if (window.innerWidth <= 768) {
         const allItems = container.querySelectorAll(".gallery-item");
@@ -285,3 +271,12 @@ function handleMobileTap(item, container) {
         item.classList.toggle("active");
     }
 }
+
+// Menutup hover kartu saat klik di luar
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.gallery-grid') && window.innerWidth <= 768) {
+        document.querySelectorAll(".gallery-item.active").forEach(item => {
+            item.classList.remove('active');
+        });
+    }
+});
