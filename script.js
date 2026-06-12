@@ -3,9 +3,9 @@
 // =======================================================
 function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     const modalImg = document.getElementById("modalImage");
-    modalImg.style.visibility = "hidden"; 
+    modalImg.style.visibility = "hidden";
     modalImg.src = imgSrc;
-    modalImg.onload = function() { modalImg.style.visibility = "visible"; };
+    modalImg.onload = function () { modalImg.style.visibility = "visible"; };
 
     document.getElementById("modalTitle").innerText = title;
     document.getElementById("modalArtist").innerText = artist;
@@ -13,10 +13,10 @@ function openModal(imgSrc, title, artist, size, paint, year, instagram, desc) {
     document.getElementById("modalPaint").innerText = paint;
     document.getElementById("modalYear").innerText = year;
     document.getElementById("modalDesc").innerText = desc;
-    
+
     const instaLink = document.getElementById("modalInstagram");
     const instaHandle = document.getElementById("modalIgHandle");
-    
+
     if (instagram && instagram !== '#') {
         const cleanHandle = instagram.replace('@', '');
         instaLink.href = `https://instagram.com/${cleanHandle}`;
@@ -46,7 +46,7 @@ function openOrderModal(data) {
 
     const slidesContainer = document.getElementById("carouselSlides");
     const dotsContainer = document.getElementById("carouselDots");
-    
+
     slidesContainer.innerHTML = "";
     dotsContainer.innerHTML = "";
 
@@ -69,6 +69,17 @@ function openOrderModal(data) {
     });
 
     updateCarouselView();
+
+    // --- FITUR BARU: GENERATE PESAN WHATSAPP OTOMATIS ---
+    const waBtn = document.getElementById("waOrderBtn");
+    if (waBtn) {
+        // Menyusun kalimat default. Tanda bintang (*) digunakan agar teks tebal (bold) di WhatsApp.
+        const defaultMessage = `Halo admin Golden Lee, saya tertarik untuk berkonsultasi dan memesan jasa layanan seni: *${data.title}*. Boleh minta informasi lebih lanjut mengenai detail harga dan proses pengerjaannya?`;
+
+        // encodeURIComponent digunakan agar spasi dan karakter khusus aman dikirim lewat URL
+        waBtn.href = `https://wa.me/6289524068996?text=${encodeURIComponent(defaultMessage)}`;
+    }
+
     document.getElementById("orderModal").style.display = "flex";
     document.body.classList.add("modal-open");
 }
@@ -95,7 +106,7 @@ function prevSlide() {
 
 function updateCarouselView() {
     const slidesContainer = document.getElementById("carouselSlides");
-    if(slidesContainer) {
+    if (slidesContainer) {
         slidesContainer.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
     }
     const dots = document.querySelectorAll("#carouselDots .dot");
@@ -107,12 +118,12 @@ function updateCarouselView() {
 // =======================================================
 // GLOBAL EVENT LISTENERS (Menutup Modal)
 // =======================================================
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     if (event.target === document.getElementById("paintingModal")) closeModal();
     if (event.target === document.getElementById("orderModal")) closeOrderModal();
 });
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === "Escape") {
         closeModal();
         closeOrderModal();
@@ -233,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initGalleryInteractions() {
     const galleryContainer = document.getElementById("galleryContainer");
     if (galleryContainer) {
-        galleryContainer.addEventListener("click", function(event) {
+        galleryContainer.addEventListener("click", function (event) {
             const item = event.target.closest(".gallery-item");
             if (!item) return;
 
@@ -248,7 +259,7 @@ function initGalleryInteractions() {
 
     const karyaContainer = document.getElementById("karyaContainer");
     if (karyaContainer) {
-        karyaContainer.addEventListener("click", function(event) {
+        karyaContainer.addEventListener("click", function (event) {
             const item = event.target.closest(".gallery-item");
             if (!item) return;
 
@@ -273,10 +284,11 @@ function handleMobileTap(item, container) {
 }
 
 // Menutup hover kartu saat klik di luar
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     if (!event.target.closest('.gallery-grid') && window.innerWidth <= 768) {
         document.querySelectorAll(".gallery-item.active").forEach(item => {
             item.classList.remove('active');
         });
     }
 });
+
