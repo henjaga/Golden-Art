@@ -74,7 +74,7 @@ function openOrderModal(data) {
     const waBtn = document.getElementById("waOrderBtn");
     if (waBtn) {
         // Menyusun kalimat default. Tanda bintang (*) digunakan agar teks tebal (bold) di WhatsApp.
-        const defaultMessage = `Halo admin Golden Lee, saya tertarik untuk berkonsultasi dan memesan jasa layanan seni: *${data.title}*. Boleh minta informasi lebih lanjut mengenai detail harga dan proses pengerjaannya?`;
+        const defaultMessage = `Halo Golden Lee, saya tertarik untuk berkonsultasi dan memesan jasa layanan seni: *${data.title}*. Boleh minta informasi lebih lanjut mengenai detail harga dan proses pengerjaannya?`;
 
         // encodeURIComponent digunakan agar spasi dan karakter khusus aman dikirim lewat URL
         waBtn.href = `https://wa.me/6289524068996?text=${encodeURIComponent(defaultMessage)}`;
